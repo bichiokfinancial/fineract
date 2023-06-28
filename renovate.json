@@ -6,8 +6,7 @@
     "helpers:pinGitHubActionDigests"
   ],
   "ignorePaths": [
-    "docs/**",
-    "fineract-client/**"
+    "docs/**"
   ],
   "labels": ["renovate"],
   "packageRules": [{
@@ -16,8 +15,20 @@
     "schedule": ["monthly"]
   },
   {
+    "matchPackageNames": ["org.eclipse.persistence:eclipselink"],
+    "allowedVersions": "<=2.7.10"
+  },
+  {
+    "matchPackageNames": ["org.eclipse.persistence:org.eclipse.persistence.jpa"],
+    "allowedVersions": "<=2.7.10"
+  },
+  {
     "matchPackageNames": ["org.glassfish.jaxb:jaxb-runtime"],
     "allowedVersions": "<=2.3.6"
+  },
+  {
+    "matchPackageNames": ["com.sun.mail:jakarta.mail"],
+    "allowedVersions": "<=1.6.7"
   },
   {
     "matchPackageNames": ["org.apache.oltu.oauth2:org.apache.oltu.oauth2.common"],
@@ -30,16 +41,6 @@
   {
     "matchPackageNames": ["org.apache.oltu.oauth2:org.apache.oltu.oauth2.httpclient4"],
     "allowedVersions": "<=1.0.1"
-  },
-  {
-    "matchPackageNames": ["org.eclipse.persistence:eclipselink"],
-    "allowedVersions": "<=4.0.0",
-    "description": "EclipseLink 4.0.1 has a bug which has been fixed but haven't been released. Try 4.0.2. https://github.com/eclipse-ee4j/eclipselink/issues/1832"
-  },
-  {
-    "matchPackageNames": ["org.eclipse.persistence:org.eclipse.persistence.jpa"],
-    "allowedVersions": "<=4.0.0",
-    "description": "EclipseLink 4.0.1 has a bug which has been fixed but haven't been released. Try 4.0.2. https://github.com/eclipse-ee4j/eclipselink/issues/1832"
   },
   {
     "depTypeList": ["dependencies"],

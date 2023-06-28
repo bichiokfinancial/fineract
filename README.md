@@ -2,7 +2,6 @@ Apache Fineract: A Platform for Microfinance
 ============
 [![Swagger Validation](https://validator.swagger.io/validator?url=https://demo.fineract.dev/fineract-provider/swagger-ui/fineract.yaml)](https://validator.swagger.io/validator/debug?url=https://demo.fineract.dev/fineract-provider/swagger-ui/fineract.yaml) [![build](https://github.com/apache/fineract/actions/workflows/build.yml/badge.svg)](https://github.com/apache/fineract/actions/workflows/build.yml) [![Docker Hub](https://img.shields.io/docker/pulls/apache/fineract.svg?logo=Docker)](https://hub.docker.com/r/apache/fineract)  [![Docker Build](https://img.shields.io/docker/cloud/build/apache/fineract.svg?logo=Docker)](https://hub.docker.com/r/apache/fineract/builds) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=apache_fineract&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=apache_fineract)
 
-</b>
 
 Fineract is a mature platform with open APIs that provides a reliable, robust, and affordable core banking solution for financial institutions offering services to the world’s 3 billion underbanked and unbanked.
 
@@ -13,39 +12,39 @@ to start contributing to this project in the online web-based IDE GitPod.io righ
 (You may initially have to press F1 to Find Command and run "Java: Start Language Server".)
 It's of course also possible to contribute with a "traditional" local development environment (see below).
 
-COMMUNITY
+Community
 =========
 
 If you are interested in contributing to this project, but perhaps don't quite know how and where to get started, please [join our developer mailing list](http://fineract.apache.org/#contribute), listen into our conversations, chime into threads, and just send us a "Hello!" introduction email; we're a friendly bunch, and look forward to hearing from you.
 
 
-REQUIREMENTS
+Requirements
 ============
-* `Java >= 17` (Azul Zulu JVM is tested by our CI on GitHub Actions)
-* MariaDB `10.9`
+* Java >= 17 (OpenJDK JVM is tested by our CI on Travis)
+* MariaDB 10.6
 
 You can run the required version of the database server in a container, instead of having to install it, like this:
 
-    docker run --name mariadb-10.9 -p 3306:3306 -e MARIADB_ROOT_PASSWORD=mysql -d mariadb:10.9
+    docker run --name mariadb-10.8 -p 3306:3306 -e MARIADB_ROOT_PASSWORD=mysql -d mariadb:10.8
 
 and stop and destroy it like this:
 
-    docker rm -f mariadb-10.9
+    docker rm -f mariadb-10.8
 
-<br>Beware that this database container database keeps its state inside the container and not on the host filesystem.  It is lost when you destroy (rm) this container.  This is typically fine for development.  See [Caveats: Where to Store Data on the database container documentation](https://hub.docker.com/_/mariadb) re. how to make it persistent instead of ephemeral.<br>
+Beware that this database container database keeps its state inside the container and not on the host filesystem.  It is lost when you destroy (rm) this container.  This is typically fine for development.  See [Caveats: Where to Store Data on the database container documentation](https://hub.docker.com/_/mariadb) re. how to make it persistent instead of ephemeral.
 
 Tomcat v9 is only required if you wish to deploy the Fineract WAR to a separate external servlet container.  Note that you do not require to install Tomcat to develop Fineract, or to run it in production if you use the self-contained JAR, which transparently embeds a servlet container using Spring Boot.  (Until FINERACT-730, Tomcat 7/8 were also supported, but now Tomcat 9 is required.)
 
-<br>IMPORTANT: If you use MySQL or MariaDB
+IMPORTANT: if you use MySQL or MariaDB
 ============
 
-Recently (after release `1.7.0`), we introduced improved date time handling in Fineract. Date time is from now on stored in UTC and we are enforcing UTC timezone even on the JDBC driver, e. g. for MySQL:
+Recently (after release 1.7.0) we introduced improved date time handling in Fineract. Date time is from now on stored in UTC and we are enforcing UTC timezone even on the JDBC driver, e. g. for MySQL:
 
 ```
 serverTimezone=UTC&useLegacyDatetimeCode=false&sessionVariables=time_zone=‘-00:00’
 ```
 
-__DO__: If you do use MySQL as your Fineract database then the following configuration is highly recommended:
+__DO__: If you do use MySQL as your Fineract databsae then the following configuration is highly recommended:
 
 * Run the application in UTC (the default command line in our Docker image has the necessary parameters already set)
 * Run the MySQL database server in UTC (if you use managed services like AWS RDS then this should be the default anyway, but it would be good to double-check)
@@ -62,7 +61,7 @@ If a previously used Fineract instance didn't run in UTC (backward compatibility
 
 __RECOMMENDATION__: you need to shift all dates in your database by the timezone offset that your Fineract instance used.
 
-<br>INSTRUCTIONS: How to run for local development
+Instructions how to run for local development
 ============
 
 Run the following commands:
@@ -71,7 +70,7 @@ Run the following commands:
 1. `./gradlew bootRun`
 
 
-<br>INSTRUCTIONS: How to build the JAR file
+Instructions to build the JAR file
 ============
 1. Clone the repository or download and extract the archive file to your local directory.
 2. Run `./gradlew clean bootJar` to build a modern cloud native fully self contained JAR file which will be created at `fineract-provider/build/libs` directory.
@@ -87,7 +86,7 @@ The tenants database connection details are configured [via environment variable
     java -jar fineract-provider.jar
 
 
-<br>SECURITY
+Security
 ============
 NOTE: The HTTP Basic and OAuth2 authentication schemes are mutually exclusive. You can't enable them both at the same time. Fineract checks these settings on startup and will fail if more than one authentication scheme is enabled.
 
@@ -104,7 +103,7 @@ FINERACT_SECURITY_OAUTH_ENABLED=false
 java -Dfineract.security.basicauth.enabled=true -Dfineract.security.oauth.enabled=false -jar fineract-provider.jar
 ```
 
-<br>OAuth2 AUTHENTICATION
+OAuth2 Authentication
 ------------
 There is also an OAuth2 authentication scheme available. Again, two ways to enable it:
 1. Use environment variables (best choice if you run with Docker Compose):
@@ -117,7 +116,7 @@ FINERACT_SECURITY_OAUTH_ENABLED=true
 java -Dfineract.security.basicauth.enabled=false -Dfineract.security.oauth.enabled=true -jar fineract-provider.jar
 ```
 
-TWO FACTOR AUTHENTICATION (2FA)
+Two Factor Authentication
 ------------
 You can also enable 2FA authentication. Depending on how you start Fineract add the following:
 
@@ -131,7 +130,7 @@ FINERACT_SECURITY_2FA_ENABLED=true
 ```
 
 
-<br>INSTRUCTIONS: How to build a WAR file
+Instructions to build a WAR file
 ============
 1. Clone the repository or download and extract the archive file to your local directory.
 2. Run `./gradlew :fineract-war:clean :fineract-war:war` to build a traditional WAR file which will be created at `fineract-war/build/libs` directory.
@@ -142,17 +141,17 @@ We recommend using the JAR instead of the WAR file deployment, because it's much
 Note that with the 1.4 release the tenants database pool configuration changed from Tomcat DBCP in XML to an embedded Hikari, configured by environment variables, see above.
 
 
-INSTRUCTIONS: How to execute Integration Tests
+Instructions to execute Integration Tests
 ============
 > Note that if this is the first time to access MySQL DB, then you may need to reset your password.
 
-Run the following commands:
+Run the following commands, very similarly to how [.travis.yml](.travis.yml) does:
 1. `./gradlew createDB -PdbName=fineract_tenants`
 1. `./gradlew createDB -PdbName=fineract_default`
 1. `./gradlew clean test`
 
 
-INSTRUCTIONS: How to run and debug in Eclipse IDE
+Instructions to run and debug in Eclipse IDE
 ============
 
 It is possible to run Fineract in Eclipse IDE and also to debug Fineract using Eclipse's debugging facilities.
@@ -170,7 +169,7 @@ You can also use Eclipse Junit support to run tests in Eclipse (Run As->Junit Te
 Finally, modifying source code in Eclipse automatically triggers hot code replace to a running instance, allowing you to immediately test your changes
 
 
-INSTRUCTIONS: How to run using Docker and docker-compose
+Instructions to run using Docker and docker-compose
 ===================================================
 
 It is possible to do a 'one-touch' installation of Fineract using containers (AKA "Docker").
@@ -214,7 +213,7 @@ Please check `application.properties` to see which connection pool settings can 
 
 NOTE: we'll keep backwards compatibility until one of the next releases to ensure that things are working as expected. Environment variables prefixed `fineract_tenants_*` can still be used to configure the database connection, but we strongly encourage using `FINERACT_HIKARI_*` with more options.
 
-<br>SSL CONFIGURATION
+SSL configuration
 =================
 
 Read also [the HTTPS related doc](fineract-doc/src/docs/en/deployment.adoc#https).
@@ -223,16 +222,16 @@ By default SSL is enabled, but all SSL related properties are now tunable. SSL c
 You can choose now easily a different SSL keystore by setting `FINERACT_SERVER_SSL_KEY_STORE` with a path to a different (not embedded) keystore. The password can be set via `FINERACT_SERVER_SSL_KEY_STORE_PASSWORD`. See the `application.properties` file and the latest Spring Boot documentation (https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html) for more details.
 
 
-<br>TOMCAT CONFIGURATION
+Tomcat configuration
 ====================
 
 Please refer to the `application.properties` and the official Spring Boot documentation (https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html) on how to do performance tuning for Tomcat. Note: you can set now the acceptable form POST size (default is 2MB) via environment variable `FINERACT_SERVER_TOMCAT_MAX_HTTP_FORM_POST_SIZE`.
 
 
-<br>INSTRUCTIONS: How to run on Kubernetes
+Instructions to run on Kubernetes
 =================================
 
-<br>General Clusters
+General Clusters
 ----------------
 
 You can also run Fineract using containers on a Kubernetes cluster.
@@ -263,7 +262,7 @@ Now to run a new Fineract instance on Minikube you can simply:
 1. `minikube service fineract-server --url --https`
 1. Fineract is now running at the printed URL (note HTTP), which you can check e.g. using:
 
-   http --verify=no --timeout 240 --check-status get $(minikube service fineract-server --url --https)/fineract-provider/actuator/health
+    http --verify=no --timeout 240 --check-status get $(minikube service fineract-server --url --https)/fineract-provider/actuator/health
 
 To check the status of your containers on your local minikube Kubernetes cluster, run:
 
@@ -286,7 +285,7 @@ To shutdown and reset your cluster, run:
 We have [some open issues in JIRA with Kubernetes related enhancement ideas](https://jira.apache.org/jira/browse/FINERACT-783?jql=labels%20%3D%20kubernetes%20AND%20project%20%3D%20%22Apache%20Fineract%22%20) which you are welcome to contribute to.
 
 
-INSTRUCTIONS: How to download Gradle wrapper
+Instructions to download Gradle wrapper
 ============
 The file gradle/wrapper/gradle-wrapper.jar binary is checked into this projects Git source repository,
 but won't exist in your copy of the Fineract codebase if you downloaded a released source archive from apache.org.
@@ -299,13 +298,13 @@ In that case, you need to download it using the commands below:
     curl --insecure -L https://github.com/apache/fineract/raw/develop/gradle/wrapper/gradle-wrapper.jar > gradle/wrapper/gradle-wrapper.jar
 
 
-INSTRUCTIONS: How to run Apache RAT (Release Audit Tool)
+Instructions to run Apache RAT (Release Audit Tool)
 ============
 1. Extract the archive file to your local directory.
 2. Run `./gradlew rat`. A report will be generated under build/reports/rat/rat-report.txt
 
 
-INSTRUCTIONS: How to enable ActiveMQ
+Instructions to enable ActiveMQ
 ============
 Messaging configuration is disabled by default. If you want to enable it and register some message listeners, application needs to be started with the proper Spring profile, ie `-Dspring.profiles.active=activeMqEnabled` (or one of the other Spring ways to configure it).
 
@@ -361,7 +360,7 @@ As discussed in [LEGAL-462](https://issues.apache.org/jira/browse/LEGAL-462), th
 complies with the [Apache Software Foundation third-party license policy](https://www.apache.org/legal/resolved.html).
 
 
-<br><br>APACHE FINERACT PLATFORM API
+Apache Fineract Platform API
 ============
 
 The API for Fineract is documented in [apiLive.htm](fineract-provider/src/main/resources/static/api-docs/apiLive.htm), and the [apiLive.htm can be viewed on Fineract.dev](https://fineract.apache.org/legacy-docs/apiLive.htm "API Documentation").  If you have your own Fineract instance running, you can find this documentation under [/fineract-provider/api-docs/apiLive.htm](https://localhost:8443/fineract-provider/api-docs/apiLive.htm).
@@ -371,7 +370,7 @@ The Swagger documentation (work in progress; see [FINERACT-733](https://issues.a
 Apache Fineract supports client code generation using [Swagger Codegen](https://github.com/swagger-api/swagger-codegen) based on the [OpenAPI Specification](https://swagger.io/specification/).  For more instructions on how to generate the client code, check [docs/developers/swagger/client.md](docs/developers/swagger/client.md).
 
 
-<br>API CLIENTS (Web UIs, Mobile, etc.)
+API clients (Web UIs, Mobile, etc.)
 ============
 
 * https://github.com/openMF/community-app/ is the "traditional" Reference Client App Web UI for the API offered by this project
@@ -380,7 +379,7 @@ Apache Fineract supports client code generation using [Swagger Codegen](https://
 * https://github.com/openMF has more related proejcts
 
 
-<br>ONLINE DEMOS
+Online Demos
 ============
 
 * [fineract.dev](https://www.fineract.dev) always runs the latest version of this code
@@ -388,7 +387,8 @@ Apache Fineract supports client code generation using [Swagger Codegen](https://
 * [Swagger-UI Demo video](https://www.youtube.com/watch?v=FlVd-0YAo6c) This is a demo video for Swagger-UI documentation, more information [here](https://github.com/apache/fineract#swagger-ui-documentation).
 
 
-<br>DEVELOPERS
+
+Developers
 ============
 Please see <https://cwiki.apache.org/confluence/display/FINERACT/Contributor%27s+Zone> for the developers wiki page.
 
@@ -399,47 +399,47 @@ Please see <https://cwiki.apache.org/confluence/display/FINERACT/How-to+articles
 Please visit [our JIRA Dashboard](https://issues.apache.org/jira/secure/Dashboard.jspa?selectPageId=12335824) to find issues to work on, see what others are working on, or open new issues.
 
 
-<br>VIDEO DEMONSTRATION
+Video Demonstration
 ============
 
 Apache Fineract / Mifos X Demo (November 2016) - <https://www.youtube.com/watch?v=h61g9TptMBo>
 
-<br>SWAGGER UI DEMONSTRATION
+Swagger-UI Documentation
 ============
 
 We use Swagger-UI to generate and maintain our API documentation, you can see the demo video [here](https://www.youtube.com/watch?v=FlVd-0YAo6c) or a live version
 [here](https://demo.fineract.dev/fineract-provider/swagger-ui/index.html). If you interested to know more about Swagger-UI you can check their [website](https://swagger.io/).
 
-<br>GORVENANCE AND POLICIES
+Governance and Policies
 =======================
 
 [Becoming a Committer](https://cwiki.apache.org/confluence/display/FINERACT/Becoming+a+Committer)
 documents the process through which you can become a committer in this project.
 
 
-<br>ERROR HANDLING GUIDELINES
+Error Handling Guidelines
 ------------------
 * When catching exceptions, either rethrow them, or log them.  Either way, include the root cause by using `catch (SomeException e)` and then either `throw AnotherException("..details..", e)` or `LOG.error("...context...", e)`.
 * Completely empty catch blocks are VERY suspicous!  Are you sure that you want to just "swallow" an exception?  Really, 100% totally absolutely sure?? ;-) Such "normal exceptions which just happen sometimes but are actually not really errors" are almost always a bad idea, can be a performance issue, and typically are an indication of another problem - e.g. the use of a wrong API which throws an Exception for an expected condition, when really you would want to use another API that instead returns something empty or optional.
 * In tests, you'll typically never catch exceptions, but just propagate them, with `@Test void testXYZ() throws SomeException, AnotherException`..., so that the test fails if the exception happens.  Unless you actually really want to test for the occurence of a problem - in that case, use [JUnit's Assert.assertThrows()](https://github.com/junit-team/junit4/wiki/Exception-testing) (but not `@Test(expected = SomeException.class)`).
 * Never catch `NullPointerException` & Co.
 
-<br>LOGGING GUIDELINES
+Logging Guidelines
 ------------------
 * We use [SLF4J](http://www.slf4j.org) as our logging API.
 * Never, ever, use `System.out` and `System.err` or `printStackTrace()` anywhere, but always `LOG.info()` or `LOG.error()` instead.
 * Use placeholder (`LOG.error("Could not... details: {}", something, exception)`) and never String concatenation (`LOG.error("Could not... details: " + something, exception)`)
 * Which Log Level is appropriate?
-    * `LOG.error()` should be used to inform an "operator" running Fineract who supervises error logs of an unexpected condition.  This includes technical problems with an external "environment" (e.g. can't reach a database), and situations which are likely bugs which need to be fixed in the code.  They do NOT include e.g. validation errors for incoming API requests - that is signaled through the API response - and does (should) not be logged as an error.  (Note that there is no _FATAL_ level in SLF4J; a "FATAL" event should just be logged as an _ERROR_.)
-    * `LOG.warn()` should be using sparingly.  Make up your mind if it's an error (above) - or not!
-    * `LOG.info()` can be used notably for one-time actions taken during start-up.  It should typically NOT be used to print out "regular" application usage information.  The default logging configuration always outputs the application INFO logs, and in production under load, there's really no point to constantly spew out lots of information from frequently traversed paths in the code about what's going on.  (Metrics are a better way.)  `LOG.info()` *can* be used freely in tests though.
-    * `LOG.debug()` can be used anywhere in the code to log things that may be useful during investigations of specific problems.  They are not shown in the default logging configuration, but can be enabled for troubleshooting.  Developers should typically "turn down" most `LOG.info()` which they used while writing a new feature to "follow along what happens during local testing" to `LOG.debug()` for production before we merge their PRs.
-    * `LOG.trace()` is not used in Fineract.
+  * `LOG.error()` should be used to inform an "operator" running Fineract who supervises error logs of an unexpected condition.  This includes technical problems with an external "environment" (e.g. can't reach a database), and situations which are likely bugs which need to be fixed in the code.  They do NOT include e.g. validation errors for incoming API requests - that is signaled through the API response - and does (should) not be logged as an error.  (Note that there is no _FATAL_ level in SLF4J; a "FATAL" event should just be logged as an _ERROR_.)
+  * `LOG.warn()` should be using sparingly.  Make up your mind if it's an error (above) - or not!
+  * `LOG.info()` can be used notably for one-time actions taken during start-up.  It should typically NOT be used to print out "regular" application usage information.  The default logging configuration always outputs the application INFO logs, and in production under load, there's really no point to constantly spew out lots of information from frequently traversed paths in the code about what's going on.  (Metrics are a better way.)  `LOG.info()` *can* be used freely in tests though.
+  * `LOG.debug()` can be used anywhere in the code to log things that may be useful during investigations of specific problems.  They are not shown in the default logging configuration, but can be enabled for troubleshooting.  Developers should typically "turn down" most `LOG.info()` which they used while writing a new feature to "follow along what happens during local testing" to `LOG.debug()` for production before we merge their PRs.
+  * `LOG.trace()` is not used in Fineract.
 
 Pull Requests
 -------------
 
-We request that your commit message include a FINERACT JIRA issue, recommended to be put in parentheses at the end of the first line.  Start with an upper case imperative verb (not past form), and a short but concise clear description. (E.g. _Add enforced HideUtilityClassConstructor checkstyle (FINERACT-821)_ or _Fix inability to reschedule when interest accrued larger than EMI (FINERACT-1109)_ etc.).
+We request that your commit message include a FINERACT JIRA issue, recommended to be put in parenthesis add the end of the first line.  Start with an upper case imperative verb (not past form), and a short but concise clear description. (E.g. _Add enforced HideUtilityClassConstructor checkstyle (FINERACT-821)_ or _Fix inability to reschedule when interest accrued larger than EMI (FINERACT-1109)_ etc.).
 
 If your PR is failing to pass our CI build due to a test failure, then:
 
